@@ -26,14 +26,8 @@ app.use(bodyParser.json());
 
 // Routes
 const users = require('./routes/users')
-const beats = require('./routes/beats')
 
 app.use("/users", users);
-app.use("/beats", beats);
-
-app.get('/uploader', function(req,res) {
-    res.sendfile(__dirname + '/upload.html');
-}); 
 
 // Catch 404
 app.use((req, res, next) => {

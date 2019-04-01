@@ -41,8 +41,4 @@ router.route("/:userId")
     .delete([passportJWT, validateParam(schemas.idSchema, "userId")],
         UsersController.deleteUser);
 
-// beats   
-router.route('/:userId/beats')
-    .get([passportJWT, validateParam(schemas.idSchema, "userId")], UsersController.getUserBeats);
-
 module.exports = router

@@ -73,21 +73,6 @@ module.exports = {
             email: Joi.string().email()
         }),
 
-        // beats
-        beatSchema: Joi.object().keys({
-            name: Joi.string().required(),
-            url: Joi.string(),
-            tempo: Joi.number().required(),
-            public: Joi.boolean().required()
-        }),
-
-        patchBeatSchema: Joi.object().keys({
-            name: Joi.string(),
-            url: Joi.string(),
-            tempo: Joi.number(),
-            public: Joi.boolean()
-        }),
-
         // mongo id
         idSchema: Joi.object().keys({
             param: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()

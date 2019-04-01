@@ -1,6 +1,5 @@
 const JWT = require('jsonwebtoken');
 const User = require('../models/user');
-const Beat = require('../models/beat');
 
 const {
     JWT_SECRET,
@@ -123,28 +122,10 @@ module.exports = {
             });
         }
 
-        for (const beatId of user.beats) {
-            await Beat.findByIdAndDelete(beatId);
-        }
-
         await user.remove();
 
         res.status(200).json({
             success: true
         });
-    },
-
-    // Beats
-    getUserBeats: async (req, res) => {
-        const {
-            userId
-        } = req.value.params;
-        if (req.user.id != userId) {
-            return res.status(401).json({
-                error: 'unaurthorized'
-            });
-        }
-        const user = await User.findById(userId).populate('beats');
-        res.status(201).json(user.beats);
     }
 };

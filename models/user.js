@@ -9,11 +9,7 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
-    },
-    beats: [{
-        type: Schema.Types.ObjectId,
-        ref: 'beat'
-    }]
+    }
 });
 
 userSchema.methods.createPasswordHash = async function (next) {
