@@ -1,1 +1,7 @@
 # node-foundation
+
+Foundation for my node.js projects which has basic user authentication.
+
+Please feel free to use in your own projects and/or contribute.
+
+Happy coding
