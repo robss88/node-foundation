@@ -3,8 +3,8 @@ class Users {
      this.users = [];
   }
 
-  addUser (userData, room) {
-    const newUser = { userData, room };
+  addUser (socketId, userData, room) {
+    const newUser = { socketId, userData, room };
     this.users.push(newUser);
     return newUser;
   }
@@ -13,13 +13,13 @@ class Users {
     const user = this.getUser(id);
 
     if (user) {
-      this.users = this.users.filter((user) => user.userData.id != id);
+      this.users = this.users.filter((user) => user.socketId != id);
     }
     return user;
   }
 
   getUser (id) {
-    return this.users.filter((user) => user.userData.id === id)[0];
+    return this.users.filter((user) => user.socketId === id)[0];
   }
 
   getUserList (room) {

@@ -72,8 +72,8 @@ io.on('connection', (socket) => {
       }
   
       socket.join(params.room);
-      chatUsers.removeUser(params.user.id);
-      chatUsers.addUser(params.user, params.room);
+      chatUsers.removeUser(socket.id);
+      chatUsers.addUser(socket.id, params.user, params.room);
   
       io.to(params.room).emit('updateUserList', chatUsers.getUserList(params.room));
       socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat room'));
@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
     });
   
     socket.on('createMessage', (message, callback) => {
-      const user = chatUsers.getUser(message.user.id);
+      const user = chatUsers.getUser(socket.id);
   
       if (user && isRealString(message.text)) {
         io.to(user.room).emit('newMessage', generateMessage(user.userData.username, message.text));
