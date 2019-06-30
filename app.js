@@ -66,17 +66,18 @@ io.on('connection', (socket) => {
     console.log('New user connected');
   
     socket.on('join', (params, callback) => {
-      if (!isRealString(params.username) || !isRealString(params.room)) {
+        console.log(params);
+      if (!isRealString(params.user.username) || !isRealString(params.room)) {
         return callback('Username and room name are required');
       }
   
       socket.join(params.room);
-      chatUsers.removeUser(socket.id);
-      chatUsers.addUser(socket.id, params.username, params.room);
+      chatUsers.removeUser(params.user.id);
+      chatUsers.addUser(params.user, params.room);
   
       io.to(params.room).emit('updateUserList', chatUsers.getUserList(params.room));
       socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat room'));
-      socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.username} has joined.`));
+      socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.user.username} has joined.`));
   
       if (callback) {
         callback();
@@ -84,10 +85,10 @@ io.on('connection', (socket) => {
     });
   
     socket.on('createMessage', (message, callback) => {
-      const user = chatUsers.getUser(socket.id);
+      const user = chatUsers.getUser(message.user.id);
   
       if (user && isRealString(message.text)) {
-        io.to(user.room).emit('newMessage', generateMessage(user.username, message.text));
+        io.to(user.room).emit('newMessage', generateMessage(user.userData.username, message.text));
       }
   
       if (callback) {
@@ -100,7 +101,7 @@ io.on('connection', (socket) => {
   
       if (user) {
         io.to(user.room).emit('updateUserList', chatUsers.getUserList(user.room));
-        io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.username} has left`));
+        io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.userData.username} has left`));
       }
     });
   });
