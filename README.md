@@ -10,6 +10,7 @@ Please feel free to use in your own projects and/or contribute.
 
 ## Install
 ```
+npm install
 yarn start
 ```
 
