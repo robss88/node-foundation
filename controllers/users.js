@@ -44,7 +44,7 @@ module.exports = {
 
         // Respond with token
         res.status(201).json({
-            token
+            token, user : newUser
         });
     },
 
@@ -53,7 +53,7 @@ module.exports = {
         const user = req.user;
         const token = signToken(user);
         res.status(200).json({
-            token
+            token, user : newUser
         });
     },
 
