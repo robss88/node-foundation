@@ -23,10 +23,10 @@ router.route("/")
     .get(passportJWT, UsersController.index)
 
 router.route('/signup')
-    .post(validateBody(schemas.authSchema), UsersController.signUp);
+    .post(validateBody(schemas.signUpSchema), UsersController.signUp);
 
 router.route('/signin')
-    .post(validateBody(schemas.authSchema), passportSignIn, UsersController.signIn);
+    .post(validateBody(schemas.signInSchema), passportSignIn, UsersController.signIn);
 
 router.route("/:userId")
     .get(validateParam(schemas.idSchema, "userId"), UsersController.getUser)
