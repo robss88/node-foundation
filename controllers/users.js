@@ -53,7 +53,7 @@ module.exports = {
         const user = req.user;
         const token = signToken(user);
         res.status(200).json({
-            token, user : newUser
+            token, user
         });
     },
 
