@@ -20,21 +20,34 @@ module.exports = {
     signUp: async (req, res) => {
         const {
             email,
-            password
+            password,
+            username
         } = req.value.body;
+        
         // Check if user exist with same email
-        const foundUser = await User.findOne({
+        const foundEmail = await User.findOne({
             email
         });
-        if (foundUser) {
+        if (foundEmail) {
             return res.status(403).json({
                 error: ' Email is already in use '
             });
         }
+        // Check if user exist with same username
+        const foundUsername = await User.findOne({
+            username
+        });
+        if (foundUsername) {
+            return res.status(403).json({
+                error: ' Username is already in use '
+            });
+        }
+
         // Create a new user
         const newUser = new User({
             email,
-            password
+            password,
+            username
         });
         await newUser.createPasswordHash();
         await newUser.save();
