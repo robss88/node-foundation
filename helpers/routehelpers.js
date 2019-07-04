@@ -64,7 +64,7 @@ module.exports = {
         }),
 
         signInSchema: Joi.object().keys({
-            email: Joi.string().email().required(),
+            email: Joi.string().required(),
             password: Joi.string().required()
         }),
 

@@ -37,9 +37,17 @@ passport.use(new LocalStrategy({
 }, async (email, password, done) => {
     try {
         // Find the user given the email
-        const user = await User.findOne({
+        var user = await User.findOne({
             email
         });
+
+        // If no user found with email Find the user given the username
+        if (!user) {
+             user = await User.findOne({
+                username : email
+            });
+        }
+        
         // If user doesn't exist handle
         if (!user) {
             return done(null, false);
