@@ -76,8 +76,8 @@ io.on('connection', (socket) => {
       chatUsers.addUser(socket.id, params.user, params.room);
   
       io.to(params.room).emit('updateUserList', chatUsers.getUserList(params.room));
-      socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat room'));
-      socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.user.username} has joined.`));
+      socket.emit('newMessage', generateMessage({username : 'Admin'}, 'Welcome to the chat room'));
+      socket.broadcast.to(params.room).emit('newMessage', generateMessage({username : 'Admin'}, `${params.user.username} has joined.`));
   
       if (callback) {
         callback();
@@ -88,7 +88,7 @@ io.on('connection', (socket) => {
       const user = chatUsers.getUser(socket.id);
   
       if (user && isRealString(message.text)) {
-        io.to(user.room).emit('newMessage', generateMessage(user.userData.username, message.text));
+        io.to(user.room).emit('newMessage', generateMessage(user.userData, message.text));
       }
   
       if (callback) {
@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
   
       if (user) {
         io.to(user.room).emit('updateUserList', chatUsers.getUserList(user.room));
-        io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.userData.username} has left`));
+        io.to(user.room).emit('newMessage', generateMessage({username : 'Admin'}, `${user.userData.username} has left`));
       }
     });
   });
