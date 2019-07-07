@@ -28,8 +28,10 @@ app.use(bodyParser.json());
 
 // Routes
 const users = require("./routes/users");
+const chat = require("./routes/chat");
 
 app.use("/users", users);
+app.use("/chat", chat);
 
 // Catch 404
 app.use((req, res, next) => {
@@ -54,7 +56,7 @@ app.use((err, req, res, next) => {
 
 // SocketIO
 const server = http.createServer(app);
-const ChatServer = require("./controllers/chat");
+const ChatServer = require("./chat/chat");
 ChatServer.start(server);
 
 // Start the server

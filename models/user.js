@@ -9,7 +9,8 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    chatRooms: [String],
 });
 
 userSchema.methods.createPasswordHash = async function (next) {

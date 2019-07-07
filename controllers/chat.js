@@ -1,81 +1,21 @@
-const { generateMessage } = require("../utils/message");
-const { isRealString } = require("../utils/validation");
-const { Users } = require("../utils/users");
-const socketIO = require("socket.io");
+const User = require('../models/user');
 
 module.exports = {
-  start: function(server) {
-    const io = socketIO(server);
-    const chatUsers = new Users();
+    chatInvite: async (req, res) => {
+        const roomId = req.params.roomId;
 
-    io.on("connection", socket => {
-      console.log("New user connected");
+        const user = await User.findById(req.user.id);
+        if (!user.chatRooms.includes(roomId)) {
+            user.chatRooms.push(roomId);
+        }
+        await user.save()
 
-      socket.on("join", (params, callback) => {
-        console.log(params);
-        if (!isRealString(params.user.username) || !isRealString(params.room)) {
-          return callback("Username and room name are required");
+        const invitee = await User.findById(req.params.userId);
+        if (!invitee.chatRooms.includes(roomId)) {
+            invitee.chatRooms.push(roomId);
         }
 
-        socket.join(params.room);
-        chatUsers.removeUser(socket.id);
-        chatUsers.addUser(socket.id, params.user, params.room);
-
-        io.to(params.room).emit(
-          "updateUserList",
-          chatUsers.getUserList(params.room)
-        );
-        socket.emit(
-          "newMessage",
-          generateMessage({ username: "Admin" }, "Welcome to the chat room")
-        );
-        socket.broadcast
-          .to(params.room)
-          .emit(
-            "newMessage",
-            generateMessage(
-              { username: "Admin" },
-              `${params.user.username} has joined.`
-            )
-          );
-
-        if (callback) {
-          callback();
-        }
-      });
-
-      socket.on("createMessage", (message, callback) => {
-        const user = chatUsers.getUser(socket.id);
-
-        if (user && isRealString(message.text)) {
-          io.to(user.room).emit(
-            "newMessage",
-            generateMessage(user.userData, message.text)
-          );
-        }
-
-        if (callback) {
-          callback("");
-        }
-      });
-
-      socket.on("disconnect", () => {
-        const user = chatUsers.removeUser(socket.id);
-
-        if (user) {
-          io.to(user.room).emit(
-            "updateUserList",
-            chatUsers.getUserList(user.room)
-          );
-          io.to(user.room).emit(
-            "newMessage",
-            generateMessage(
-              { username: "Admin" },
-              `${user.userData.username} has left`
-            )
-          );
-        }
-      });
-    });
-  }
-};
+        await invitee.save()
+        res.status(200);
+    }
+}
