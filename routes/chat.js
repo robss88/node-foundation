@@ -14,7 +14,8 @@ const passportJWT = passport.authenticate('jwt', {
     failWithError: true
 });
 
-router.route("/:roomId/invite/:userId")
-.post([passportJWT, validateParam(schemas.idSchema, "userId")], ChatController.chatInvite);
+router.route("/:roomId/leave")
+.post([passportJWT, validateParam(schemas.idSchema, "userId")], ChatController.joinRoom)
+.delete([passportJWT, validateParam(schemas.idSchema, "userId")], ChatController.leaveRoom);
 
 module.exports = router
