@@ -6,6 +6,7 @@ Please feel free to use in your own projects and/or contribute.
 ## Features
 
 - User authentication
+- Password Encryption
 - Chat
 
 ## Install
