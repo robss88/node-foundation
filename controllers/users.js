@@ -30,7 +30,7 @@ module.exports = {
         });
         if (foundEmail) {
             return res.status(403).json({
-                error: ' Email is already in use '
+                error: 'Email is already in use'
             });
         }
         // Check if user exist with same username
@@ -39,7 +39,7 @@ module.exports = {
         });
         if (foundUsername) {
             return res.status(403).json({
-                error: ' Username is already in use '
+                error: 'Username is already in use'
             });
         }
 
